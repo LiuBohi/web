@@ -1,0 +1,302 @@
+/* should delete this and just make more specific instances
+for each place it is needed
+h5 span.acro:after { content: ": ";}
+*/
+
+div#content a[title] {
+  color: #00a;
+}
+
+div#content a[title]:hover {
+  background: #ddf;
+  color: #006;
+}
+
+/* Most people don't like to read very long lines, so set a maximum to
+the width of the contents on a page.
+
+Planning ahead: we would like a way for students to make notes as they
+read the book, and this creates a margin on the right side of the page.
+Rob:  how does this compare to the page width in the new paper version
+of your book?
+*/
+
+div #content { /* max-width: 600px */ 
+   margin-right: 30px;
+}
+
+div.section h3.section {
+  font-weight: bold;
+  font-size: 250%;
+  display:none;
+}
+
+/* Subsections are in a div of class "subsection" with a title property
+(set to the subsection title) and an acro property (set to the subsection
+acronym).  We use CSS ":before" on the div to create the subsection heading.
+Then we throw away the h3 that also contains the title. 
+*/
+
+div.subsection:before {
+  font-weight: bold;
+  font-size: 150%;
+  content:   "Subsection "   attr(acro)": " attr(titletext);
+/* this doesn't do anything:
+  margin-bottom: 100px;
+*/
+/*  content:   "\A7\A7"   attr(acro)": " attr(titletext);
+*/
+}
+
+
+div.subsection h4 span.acro:after{ content: ": ";}
+
+div.subsection h4.subsection {
+  font-weight: bold;
+  font-size: 150%;
+  display:none;
+}
+
+h4.subsection + p { margin-top: 2px }
+
+/* definitions are in a div of class "definition" with a title property
+(set to the term being defined) and an acro property (set to the acronym of
+the thing being defined).  We use CSS ":before" on the div to create the:
+**Definition TBD: Term Being Defined**
+Then we throw away the h5 that also contains that information.
+
+Inside a definition we encourage the use of <em class="term"> for those
+terms which are being defined. (95% of the time an <em> in a definition
+is indication a term.  Rob's "MN" definition has one of the counterexamples.)
+
+A theorem will be typeset similarly to a definition and perhaps should be
+handled in some combined way.
+*/
+
+div.definition { margin: 10px 0 0 0}
+
+div.definition h5 {
+  font-weight: bold;
+  font-size: 110%;
+}
+
+div.definition h5 span.type:after {  content: " "; }
+div.definition h5 span.acro:after {  content: ": "; }
+div.definition h5 span.titletext:after {  content: ". ";  margin: 0 10px 0 0;}
+
+div.definition h5.definition {
+  display:inline;
+}
+
+div.definition p:first-child {
+  display: inline;
+}
+
+div.definition h5.definition + p {
+  display: inline;
+}
+
+div.definition em.term {
+  font-style: italic;
+  font-weight: 600;
+}
+
+div.definition + div.definition {
+  margin-top: 15px;
+}
+
+/* Theorems are typeset the same as definitions, except that the text
+is in italics.  And we don't need a special <em> tag.
+*/
+
+div.theorem {
+  margin: 0 0 10px 0;
+}
+
+div.theorem h5 {
+  font-weight: bold;
+  font-size: 110%;
+}
+
+div.theorem h5.theorem {
+  display:inline;
+}
+
+div.theorem h5:first-child {
+  display:inline;
+}
+
+div.theorem h5 span.type:after {  content: " "; }
+div.theorem h5 span.acro:after {  content: ": "; }
+div.theorem h5 span.titletext:after {  content: ". ";  margin: 0 10px 0 0;}
+
+div.theorem div.statement {
+  display: inline;
+}
+
+div.theorem div.statement p {
+  font-style: italic;
+}
+
+div.theorem div.statement p:first-child {
+  display: inline;
+}
+
+div.definition + div.theorem { margin-top: 15px; }
+
+h4.subsection + div.theorem { margin-top: 20px }
+
+h4.subsection + div.definition { margin-top: 20px }
+
+/* obsolete
+div.theorem h5.theorem + p {
+  display: inline;
+}
+*/
+
+div.theorem div.statement p:last-of-type {
+  margin-bottom: 0;
+}
+
+div.theorem div.statement ol {
+  font-style: italic;
+}
+
+div.theorem div.proof { margin: 5px 0 10px 0; }
+
+div.theorem + div.theorem {
+  margin-top: 25px;
+}
+
+/* to make more space above the next subsection, when a subsection
+ends with a theorem
+*/
+div.subsection div.theorem:last-child { margin-bottom: 30px }
+
+/* examples are in a div of class "example" with an acro property set to
+the acronym of the example.
+
+A "Sage example" has class "sage".  The styling is the same, so the two sets
+of styles below could be combined.
+*/
+
+div.example h5 {
+  font-weight: bold;
+  font-size: 110%;
+}
+
+div.example h5.example span.acro:after {  content: ":"; }
+
+/* doesn't work because of the surrounding knowl
+div.example h5 span.acro:after {  content: ". "; }
+*/
+div.example h5 span.titletext:before {  content: ""; margin: 0 0 0 10px; }
+
+div.sage h5 {
+  font-weight: bold;
+  font-size: 110%;
+}
+
+div.sage h5 span.titletext:before {  content: ""; margin: 0 0 0 10px; }
+
+div.sage h5.sage span.acro:after {  content: ":"; }
+
+h4.readingquestions { 
+   font-weight: bold;
+  font-size: 110%;
+}
+
+h4.exercises { 
+   font-weight: bold;
+  font-size: 110%;
+}
+
+
+
+/* the following is a hack because Rob uses a table for the toc on
+   a chapter page 
+*/
+div#content table th a {
+  color: #00a;
+}
+
+div#content table th a:hover {
+  background: #ddf;
+  color: #006;
+}
+
+div#content table th a:visited {
+  color: #00a;
+}
+
+div#content table tr a {
+  color: #00a;
+}
+
+div#content table tr a:hover {
+  background: #ddf;
+  color: #006;
+}
+
+div#content table tr a:visited {
+  color: #00a;
+}
+
+
+div.annotatedacronyms { margin: 15px 0 0 0; }
+
+.diagram {text-align:center; margin-bottom:2em}
+
+.context {text-align:right}
+
+* {font-family: 'Open Sans', sans-serif;}
+
+pre, .code, .CodeMirror-lines {font-family: 'Source Code Pro', monospace;}
+
+ol 
+{
+    margin: 5px 0 0 15px;
+    padding-left:25px;
+}
+
+ol li 
+{
+    margin: 0 0 9px 0;
+    padding: 0px;
+    text-indent: -25px;
+    margin-left: 20px;
+}
+
+#header #title-content {line-height: 110%;}
+
+p.attribution {text-align:right}
+
+h5.exercise span.acro:after {  content: ""; }
+
+div.exercisegroup { 
+   border-right-style:dotted;
+   border-right-width:3px;
+   border-top-style:dotted;
+   border-top-width:3px;
+
+   margin-top: 30pt;
+}
+
+div.exercisegroup > p:first-child {
+/*  alternate to the div.exercisegroup margin-top
+  margin-top:25pt;
+*/
+  font-style: italic;
+  font-size: 110%;
+}
+
+div.problem > p:first-child {
+  margin-top:1pt;
+}
+
+div.exercisegroup + div.exercise { margin-top: 30pt; }
+
+h5.exercise { margin-bottom: 0pt; }
+
+h5.exercise span.contributor { margin-left: 8pt; }
+h5.solution span.contributor { margin-left: 8pt; }

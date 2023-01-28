@@ -1,0 +1,27 @@
+.sagecell .CodeMirror-scroll {
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+.sagecell .CodeMirror {
+    height: auto;
+}
+
+
+.sagecell-practice .CodeMirror-scroll {
+  height: 100px;
+}
+
+.sagecell button.sagecell_evalButton {
+    font-size: 80%;
+}
+
+.sagecell_sessionContainer {
+    margin-bottom:1em;
+}
+
+.sagecell_sessionContainer:after {
+    display: none;
+/*  display:table;
+    content: " ";
+    clear: both; */
+}

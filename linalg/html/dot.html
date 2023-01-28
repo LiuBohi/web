@@ -1,0 +1,1243 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Linear Algebra,  Part 5: Dot product (Mathematica)</title>
+<link type="text/css" rel="stylesheet" href="../css/style.css" />
+   
+   <!-- MathJax Custom Macros -->
+   <script type="text/x-mathjax-config" src="../../js/mathjax.js"></script>
+
+   <!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/javascript"
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!---
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_CHTML-full"></script>
+--->   
+
+   <!-- SageCell -->
+   <script type="text/javascript" src="https://sagecell.sagemath.org/static/jquery.min.js"></script>
+   <script src="https://sagecell.sagemath.org/embedded_sagecell.js"></script>
+   
+   <!-- Styling -->
+   <!-- BootStrap -->
+   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+   <link href="../../css/sagecell.css" rel="stylesheet" type="text/css">
+   <!-- <link href="https://aimath.org/knowlstyle.css" rel="stylesheet" type="text/css"> -->
+   <link href="../../css/knowlstyle.css" rel="stylesheet" type="text/css">
+<link href="../../css/searchbar.css" rel="stylesheet" type="text/css">
+   
+   <!-- <script type="text/javascript" src="https://aimath.org/knowl.js"></script> -->
+   <script type="text/javascript" src="../../js/knowl.js"></script>
+   
+   <link href="https://fonts.googleapis.com/css?family=Istok+Web:400,400italic,700%7CSource+Code+Pro:400" rel="stylesheet" type="text/css">
+   <link href="../../css/beezer.css" rel="stylesheet" type="text/css">
+   <link href="../../css/beezer-addon.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+		tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+		tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+
+		function GetClock(){
+		var d=new Date();
+		var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getFullYear();
+		var nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+
+		if(nhour==0){ap=" AM";nhour=12;}
+		else if(nhour<12){ap=" AM";}
+		else if(nhour==12){ap=" PM";}
+		else if(nhour>12){ap=" PM";nhour-=12;}
+
+		if(nmin<=9) nmin="0"+nmin;
+		if(nsec<=9) nsec="0"+nsec;
+
+		document.getElementById('clockbox').innerHTML=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
+		}
+
+		window.onload=function(){
+		GetClock();
+		setInterval(GetClock,1000);
+		}
+	</script>
+<style type="text/css">
+.style1 {
+	color: #0000FF;
+	font-weight: bold;
+}
+.style5 {
+	color: #800000;
+	font-weight: bold;
+}
+</style>
+
+<style type="text/css">
+.custom {
+	font-family: Times;
+	font-weight: bold;
+	color: brown;
+	font-size:150%;
+}
+</style>
+
+</head>
+
+<body>
+<!-- Header Begin -->
+   <div id="header">
+      <div id="logo">
+         <a href="https://www.cfm.brown.edu/people/dobrush/">
+<!--            <img src="images/lay.jpg"> -->
+            <img src="../../images/oscilloscope.gif">
+         </a>
+      </div>
+      <div class="right">
+         <div class="bread">
+            <a href="../../index.html">Linear Algebra</a> Part 5: Euclidean Vector Spaces &Gt; Dot product 
+<!---				<div style="position:absolute; left:710px; display:inline;"><b>Vladimir Dobrushkin<br><a href=""https://www.cfm.brown.edu/people/dobrush/">"https://www.cfm.brown.edu/people/dobrush/</a></b></div>
+--->
+         </div>
+			<div id="clockbox" style="font-family:Times; font-size:1em; color:black;"></div>
+			<div id="title"><div id="title-content">Linear Algebra with Mathematica</div></div>
+      </div>
+   </div>
+<!-- Headerr End -->
+<!-- Sidebar Begin -->
+   <div id="sidebar">
+		<h2 class="link"><a data-toggle="collapse" href="#part0">Introduction to Linear Algebra</a></h2>
+		<ul id="part0" class="list collapse">
+<!--  <li><a href="preface.html">Preface</a></li>  -->
+<li><a href="../../index.html">Linear Algebra Software</a></li>
+<li><a href="../../notation.html">Notation</a></li>
+</ul>
+		<h2 class="link"><a data-toggle="collapse" href="#part1">Systems of Linear Equations</a></h2>
+		<ul id="part1" class="list collapse">
+<li><a href="../Part1/part1.html">Introduction</a></li>
+<li><a href="../Part1/linear.html">Linear Systems</a></li>
+<li><a href="../Part1/vector.html">Vectors</a></li>
+<li><a href="../Part1/combination.html">Linear combinations</a></li>
+<li><a href="../Part1/matrix.html">Matrices</a></li>
+<li><a href="../Part1/line.html">Planes in &Ropf;&sup3;</a></li>
+<li><a href="../Part1/row.html">Row operations</a></li>
+
+<li><a href="../Part1/gauss.html">Gaussian elimination</a></li>
+<li><a href=../Part1/"rref.html">Reduced Row-Echelon Form </a></li>
+<li><a href="../Part1/solve.html">Equation <b>A</b>&thinsp;<b>x</b> = <b>b</b> </a></li>
+<li><a href="../Part1/sensive.html">Sensitivity of solutions</a></li>
+
+<li><a href="../Part1/plane.html">Plane transformations</a></li>
+<li><a href="exercise.html">Exercises</a></li>
+<li><a href="answer.html">Answers</a></li>
+</ul>
+
+
+<!------ Part 2  ------>
+<h2 class="link"><a data-toggle="collapse" href="#part2">Matrix Algebra</a></h2>
+<ul id="part2" class="list collapse">
+<li><a href="../Part2/part2.html">Introduction</a></li>
+<li><a href="../Part2/manupulate.html">Manipulation of matrices</a></li>
+<li><a href="../Part2/transform.html">Matrix transformations</a></li>
+<li><a href="../Part2/block.html">Block matrices</a></li>
+<li><a href="../Part2/det.html">Determinants</a></li>
+<li><a href="../Part2/cofactor.html">Cofactors</a></li>
+<li><a href="../Part2/cramer.html">Cramer's rule</a></li>
+<li><a href="../Part2/partition.html">Partitioned matrices</a></li>
+<li><a href="../Part2/element.html">Elementary Matrices</a></li>
+<li><a href="../Part2/inverse.html">Inverse matrices</a></li>
+<li><a href="../Part2/LU.html">Elimination: <strong>A</strong> = <strong>LU</strong></a></li>
+<li><a href="../Part2/PLU.html">PLU factorization</a></li>
+<li><a href="../Part2/reflection.html">Reflection</a></li>
+<li><a href="../Part2/Givens.html">Givens rotation </a></li>
+<li><a href="../Part2/special.html">Special matrices</a></li>
+<li><a href="../Part2/exercise.html">Exercises</a></li>
+<li><a href="../Part2/answer.html">Answers</a></li>
+</ul>
+
+
+
+<!------ Part 3  ------>
+		<h2 class="link"><a data-toggle="collapse" href="#part3">Vector Spaces</a></h2>
+		<ul id="part3" class="list collapse">
+<li><a href="../Part3/part3.html">Introduction</a></li>
+<li><a href="../Part3/motiv.html">Motivation</a></li>
+<li><a href="../Part3/vector.html">Vector Spaces</a></li>
+<li><a href="../Part3/independence.html">Linear Independence</a></li>
+<li><a href="../Part3/bases.html">Bases </a></li>
+<li><a href="../Part3/dim.html">Dimension </a></li>
+<li><a href="../Part3/coord.html">Coordinate systems </a></li>
+     <!----  to be removed 
+<li><a href="../Part3/basis.html">Coordinates and basis</a></li> -->
+<li><a href="../Part3/change.html">Change of basis </a></li>
+<li><a href="../Part3/linear.html">Linear transformation </a></li>
+<li><a href="../Part3/dual.html">Dual spaces</a></li>
+<li><a href="../Part3/subspace.html">Subspaces</a></li>
+<li><a href="../Part3/intersection.html">Intersections</a></li>
+<li><a href="../Part3/direct.html">Direct Sums</a></li>
+
+<li><a href="../Part3/example.html">Matrix Spaces</a></li>
+<li><a href="../Part3/row.html">Row space</a></li>
+<li><a href="../Part3/range.html">Range or Column Space</a></li>
+<li><a href="../Part3/rank.html">Rank</a></li>
+<li><a href="../Part3/kernel.html">Null Spaces or Kernels</a></li>
+<li><a href="../Part3/dimT.html">Dimension Theorems</a></li>
+<li><a href="../Part3/four.html">Four Subspaces</a></li>
+<li><a href="../Part3/axb.html">Solving <strong>A</strong> <strong>x</strong> = <strong>b</strong></a></li>
+<li><a href="../Part3/exercise.html">Exercises</a></li>
+<li><a href="../Part3/answer.html">Answers</a></li>
+</ul>
+
+
+<!------ Part 4  ------>
+		<h2 class="link"><a data-toggle="collapse" href="#part4">Eigenvalues, Eigenvectors</a></h2>
+		<ul id="part4" class="list collapse">
+<li><a href="../Part4/part4.html">Introduction</a></li>
+<li><a href="../Part4/characteristic.html">Characteristic Polynomials</a></li>
+<li><a href="../Part4/multi.html">Algebraic and Geometric Multiplicities</a></li>
+<li><a href="../Part4/minimal.html">Minimal Polynomials</a></li>
+<li><a href="../Part4/eigen.html">Eigenspaces</a></li>
+<li><a href="../Part4/gersh.html">Where are Eigenvalues?</a></li>
+<li><a href="../Part4/ab.html">Eigenvalues of <b>AB</b> and <b>BA</b></a></li>
+<li><a href="../Part4/geneigen.html">Generalized Eigenvectors</a></li>
+
+</ul>
+
+
+
+
+<!------ Part 5  ------>
+		<h2 class="link"><a data-toggle="collapse" href="#part5">Euclidean Vector Spaces</a></h2>
+		<ul id="part5" class="list collapse">
+<li><a href="../Part5/part5.html">Introduction</a></li>
+<li><a href="../Part5/dot.html">Dot product</a></li>
+<li><a href="../Part5/inner.html">Inner product</a></li>
+<li><a href="../Part5/vdot.html">Vector products</a></li>
+<li><a href="../Part5/norm.html">Norm and distance</a></li>
+<li><a href="../Part5/mnorm.html">Matrix norms</a></li>
+<li><a href="../Part5/orthogonal.html">Orthogonality</a></li>
+<li><a href="../Part5/sets.html">Orthogonal Sets</a></li>
+<li><a href="../Part5/symmetric.html">Self-adjoint Matrices</a></li>
+<li><a href="../Part5/cholesky.html">Cholesky decomposition</a></li>
+<li><a href="../Part5/unitary.html">Unitary Matrices</a></li>
+<li><a href="../Part5/projection.html">Projection Operators</a></li>
+<li><a href="../Part5/gram.html">Gram--Schmidt Process</a></li>
+<li><a href="../Part5/QR.html">QR-decomposition</a></li>
+<li><a href="../Part5/least.html">Least Square Approximation</a></li>
+<li><a href="../Part5/quadratic.html">Quadratic Forms</a></li>
+<li><a href="../Part5/exercise.html">Exercises</a></li>
+<li><a href="../Part5/answer.html">Answers</a></li>
+</ul>
+
+
+
+
+<!------ Part 6  ------>
+		<h2 class="link"><a data-toggle="collapse" href="#part6">Functions of Matrices</a></h2>
+		<ul id="part6" class="list collapse">
+<li><a href="../Part6/part6.html">Introduction</a></li>
+<li><a href="../Part6/similar.html">Similar matrices</a></li>
+
+<li><a href="../Part6/diagonalization.html">Diagonalization</a></li>
+<li><a href="../Part6/sylvester.html">Sylvester Formula</a></li>
+<li><a href="../Part6/resolvent.html">The Resolvent Method </a></li>
+<li><a href="../Part6/spectral.html">Polynomial Interpolation </a></li>
+<li><a href="../Part6/positive.html">Positive Matrices </a></li>
+<li><a href="../Part6/roots.html">Roots</a></li>
+<li><a href="../Part6/polar.html">Polar Factorization</a></li>
+<li><a href="../Part6/spectral2.html">Spectral Decomposition </a></li>
+<li><a href="../Part6/svd.html">SVD</a></li>
+<<li><a href="../Part6/moore.html">Pseudoinverse</a></li>
+<li><a href="../Part6/exercise.html">Exercises</a></li>
+<li><a href="../Part6/answer.html">Answers</a></li>
+</ul>
+
+<!------ former Part 7  
+		<h2 class="link"><a data-toggle="collapse" href="#part7">Numerical Methods</a></h2>
+		<ul id="part6" class="list collapse">
+</ul>
+--->
+
+
+
+<!---- Part 7  ------>
+		<h2 class="link"><a data-toggle="collapse" href="#part7">Applications</a></h2>
+		<ul id="part7" class="list collapse">
+<li><a href="../Part7/gps.html">GPS Problem</a></li>
+<li><a href="../Part7/graph.html">Graph Theory</a></li>
+<li><a href="../Part7/hamming.html">Error Correcting Codes </a></li>
+<li><a href="../Part7/circuit.html">Electric Circuits</a></li>
+<li><a href="../Part7/markov.html">Markov Chains</a></li>
+<li><a href="../Part7/cryptography.html">Cryptography</a></li>
+<li><a href="../Part7/wave.html"> Wave-length Transfer Matrix</a></li>
+<li><a href="../Part7/graphics.html"> Computer Graphics</a></li>
+<li><a href="../Part7/linpro.html"> Linear Programming</a></li>
+<li><a href="../Part7/hill.html">Hill's Determinant</a></li>
+<li><a href="../Part7/fibo.html">Fibonacci Matrices</a></li>
+<li><a href="../Part7/dft.html"> Discrete Fourier Transform</a></li>
+<li><a href="../Part7/fft.html"> Fast Fourier Transform</a></li>
+</ul>
+
+<!------ Part 8  ------>
+		<h2 class="link"><a data-toggle="collapse" href="#partR"> Miscellany</a></h2>
+		<ul id="partR" class="list collapse">
+<li><a href="section-VR.html">Vector Representations</a></li>
+<li><a href="section-MR.html">Matrix Representations</a></li>
+<li><a href="section-CB.html">Change of Basis</a></li>
+<li><a href="section-OD.html">Orthonormal Diagonalization</a></li>
+<li><a href="../Part8/penrose.html"> Generalized Inverse</a></li>
+</ul>
+
+<!------ Part 9  ------>
+		<h2 class="link"><a data-toggle="collapse" href="#partP">Preliminaries</a></h2>
+		<ul id="partP" class="list collapse">
+<li><a href="../Part9/complex0.html">Complex Number Operations</a></li>
+<li><a href="../Part9/set.html">Sets</a></li>
+<li><a href="../Part9/poly.html">Polynomials</a></li>
+<li><a href="../Part9/polymat.html">Polynomials and Matrices</a></li>
+
+<!----- from Numerical methods   ---->
+<li><a href="../Part9/solve.html">Computer solves Systems of Linear Equations</a></li>
+<li><a href="../Part9/eigen.html">Location of Eigenvalues </a></li>
+<li><a href="../Part9/power.html">Power Method</a></li>
+<li><a href="../Part9/iter.html">Iterative Method</a></li>
+
+<li><a href="section-SD.html">Similarity and Diagonalization</a></li>
+
+</ul>
+		<h2 class="link"><a href="../../glossary/">Glossary</a></h2>
+		<ul class="list">
+			<li> 
+				<a href="../../glossary/A.html">A</a><a href="../../glossary/B.html">B</a><a href="../../glossary/C.html">C</a><a href="../../glossary/D.html">D</a><a href="../../glossary/E.html">E</a><a href="../../glossary/F.html">F</a><a href="../../glossary/G.html">G</a><a href="../../glossary/H.html">H</a><a href="../../glossary/I.html">I</a><a href="../../glossary/J.html">J</a><a href="../../glossary/K.html">K</a><a href="../../glossary/L.html">L</a><a href="../../glossary/M.html">M</a>
+			</li>
+			<li> 
+				<a href="../../glossary/N.html">N</a><a href="../../glossary/O.html">O</a><a href="../../glossary/P.html">P</a><a href="../../glossary/Q.html">Q</a><a href="../../glossary/R.html">R</a><a href="../../glossary/S.html">S</a><a href="../../glossary/T.html">T</a><a href="../../glossary/U.html">U</a><a href="../../glossary/V.html">V</a><a href="../../glossary/W.html">W</a><a href="../../glossary/X.html">X</a><a href="../../glossary/Z.html">Z</a>
+			</li>
+		</ul>
+		<h2 class="link"><a data-toggle="collapse" href="#reference">Reference</a></h2>
+		<ul id="reference" class="list collapse">
+			<li><a href="../free.html">Free Materials</a></li>
+			<li><a href="../books.html">Books</a></li>
+			<li><a href="../../GFDL.html">GFDL License</a></li>
+		</ul>
+   </div>
+<!-- Sidebar End -->
+
+<div id="main"><div id="content">
+
+
+<h1>Dot Product</h1>
+
+Many abstract concepts that make linear algebra a powerful mathematical tool have their roots in plane geometry so we begin our study of dot product by reviewing basic properties of lengths and angles in the real two-dimensional plane &reals;&sup2;. Guided by these geometrical properties, we formulate properties of dot product that further will be generalized in the following section. Dot product is used to define a magnitude of a vector that is called norm in mathematics. 
+
+
+
+<p>&nbsp;</p>
+<div class="chapter">
+<p class="custom">&reals;&sup2; Motivation </p>
+    <hr color="#cccccc" noshade="noshade" size="1" width="100%" />
+</div>
+
+
+<div id="theorem1" class="theorem">
+<!-- DON'T paste before here! -->
+<span style="color:blue"><b>Classical Pythagorean Theorem: </b></span> 
+If &#119886; and <i>b</i> are the lengths of two sides of a right triangle, and if <i>c</i> is the length of its hypotenuse, then  &#119886;&sup2; + <i>b</i>&sup2; = <i>c</i>&sup2;. 
+</div> 
+
+
+<button type="button" class="btn btn-proof collapse_panel" data-toggle="collapse" data-target="#proof1">Proof of Pythagorean Theorem:</button>
+   <div id="proof1" class="collapse proof">
+Construct a square with side <i>c</i> and place four copies of the right triangle around it to form a larger square with side &#119886; + <i>b</i>. The are of the larger square is equal to the area of the smaller square plus four times the area of the original triangle with sides  &#119886; and <i>b</i>: 
+
+
+
+<table style="width:80%">
+  <tr>
+    <td>
+
+<figure>
+<div><img src="figures/pythagor.png" width="252" height="250"/></div>
+<figcaption>Classical Pythagorean theorem</figcaption>
+</figure>
+
+</td>
+    <td>    
+&nbsp; &nbsp; &nbsp
+    </td>
+    <td>
+<div class="box1">
+gr1 = Graphics[{Red, Opacity[.5], Rectangle[{0, 0}],
+   Green, Opacity[.5], Triangle[{{0, .77}, {0, 1}, {.77, 1}}],
+   (*Red,Arrow[{{.5,.5},{0,.77}}],Arrow[{{.5,.5},{.77,1}}],*)
+   Blue,
+    Opacity[.2], 
+   Rotate[Rectangle[{0.1, 0.1}, {.9, .9}], 100/6 Degree](*,
+   Green,PointSize->Medium,Point[{.5,.5}]*)},
+  Epilog -> {Text["a", {0.03, .9}], Text["b", {.4, .97}], 
+    Text["c", {0.3, .88}]},
+  Frame -> {True, True, False, False},
+  FrameTicks -> None,
+  FrameLabel -> {{None, 
+     None}, {"Cosine is posative: Cos(\[Theta]) > 0", None}}, 
+  PlotLabel -> "Classical Pythagorean Theorem Proof"]
+</div>
+
+</td>
+  </tr>
+</table> 
+<br>
+
+<div class="math">
+\[ 
+(a+b)^2 = c^2 + 4 \left( \frac{1}{2} \,ab \right) . 
+\] </div> 
+
+<div class="box1">
+Simplify[(a + b)^2 == c^2 + 4 (1/2 a b)]
+</div>
+
+
+Hence, 
+
+<div class="math">
+\[ 
+a^2 + 2ab + b^2 = c^2 + 2ab \qquad \Longrightarrow \qquad a^2 + b^2 = c^2 . 
+\] </div> 
+
+</div> 
+
+The length of any one side of a plane triangle (it needs not be a right triangle) is determined by the lengths of its other two sides and the cosine of the angle between them. This is a consequence of the Pythagorean theorem. 
+
+
+<div id="theorem2" class="theorem">
+<!-- DON'T paste before here! -->
+<span style="color:blue"><b>Theorem (Law of cosines): </b></span> 
+Let &#119886; and <i>b</i> be the lengths of two sides of a plane triangle, let &theta; be the angle between two sides, and let <i>c</i> be the length of the third side. Then &#119886;&sup2; + <i>b</i>&sup2; &minus; 2&#119886;<i>b</i>&thinsp;cos&theta; = <i>c</i>&sup2;. 
+</div> 
+
+
+
+<button type="button" class="btn btn-proof collapse_panel" data-toggle="collapse" data-target="#proof2">Proof of Law of cosines theorem:</button>
+   <div id="proof2" class="collapse proof">
+The Pythagorean theorem ensures that 
+
+<div class="math">
+\begin{align*}
+c^2 &= \left( a - b\,\cos \theta \right)^2 + \left( b\,\sin\theta \right)^2 
+\\ 
+&= a^2 -2ab\,\cos\theta + b^2 \cos^2 \theta +  b^2 \sin^2 \theta 
+\\ 
+&= a^2 -2ab\,\cos\theta + b^2 
+\end{align*} </div> 
+
+<div class="box1">
+Clear[a, b, c]; <br />
+Solve[c^2 == (a \[Minus] b Cos[\[Theta]])^2 + (b Sin[\[Theta]])^2, 
+   c][[2, 1, 2]] // FullSimplify; <br />
+%^2
+</div>
+<div class="box2">
+a^2 + b^2 - 2 a b Cos[\[Theta]]
+</div>
+
+because cos&sup2; + sin&sup2; = 1. 
+
+<div class="box1">
+TrigExpand[Cos[\[Theta]]^2 + Sin[\[Theta]]^2]
+</div>
+<div class="box2">
+1
+</div>
+
+
+If &theta; = &pi;/2, then cos&theta; = 0. This case corresponds to the right angle, considered previously. 
+
+<div class="box1">
+\[Theta]1 = 30 Degree;
+a = 10;
+b = 5;
+Graphics[{Red, Thick, Dashing[{}], 
+  Circle[{0, 0}, 1, {.145 Pi, -(Pi/1350)}], Green, Opacity[.2], 
+  Triangle[{{0, 0}, {5, 0}, {5, b Sin[\[Theta]1]}}], Green, 
+  Opacity[.4], Triangle[{{5, 0}, {5, b Sin[\[Theta]1]}, {10, 0}}], 
+  Black, Line[{{5, .1}, {5.1, .1}}], Line[{{5.1, .1}, {5.1, 0}}], 
+  Black, Dashed, Line[{{5, 0}, {5, b Sin[\[Theta]1]}}]},
+ Epilog -> {Text[
+    "\[LongLeftArrow]     a     \[LongRightArrow]", {5, -.15}], 
+   Text["b", {2, 1.2}], Text["b Cos(\[Theta])", {3, .12}], 
+   Text["a-(b Cos(\[Theta]))", {7, .12}], Text["c", {8, 1.2}], 
+   Text["  \[Theta] = 30\[Degree]", {1.25, .2}], 
+   Rotate[Text["b Sin(\[Theta])", {4.8, 1}], 90 Degree]}, 
+ ImageSize -> 650, Frame -> False,
+ FrameTicks -> None,
+ FrameLabel -> {"Cos(\[Theta]) is positive if 0 < \[Theta] < \
+\!\(\*FractionBox[\(\[Pi]\), \(2\)]\)", None, None, None},
+ PlotRange -> {{0, 10}, {-.5, 2.5}}]
+</div>
+<div class="box1">
+\[Theta]2 = 120 Degree;
+a = 3;
+b = 5;
+Graphics[{Black, Line[{{0, .1}, {.1, .1}}], Line[{{.1, .1}, {.1, 0}}],
+   Red, Thick, Dashing[{}], 
+  Circle[{-b Cos[\[Theta]2], 0}, .5, {(1.3 Pi)/2, -((3 Pi)/1350)}], 
+  Green, Opacity[.4], 
+  Triangle[{{0, 0}, {0, b Sin[\[Theta]2]}, {-b Cos[\[Theta]2], 0}}], 
+  Green, Opacity[.2], 
+  Triangle[{{-b Cos[\[Theta]2], 0}, {0, 
+     b Sin[\[Theta]2]}, {a - b Cos[\[Theta]2], 0}}], Black, Dashed, 
+  Line[{{0, 0}, {0, b Sin[\[Theta]2]}}], 
+  Line[{{0, 0}, {-b Cos[\[Theta]2], 0}}]},
+ Epilog -> {Text["a", {4, -.12}], Text["b", {1.6, 1.2}], 
+   Text["-b Cos(\[Theta])", {1, -.12}], Text["c", {3.2, 2}], 
+   Text["     \[Theta] = 120\[Degree]", {3.1, .45}], 
+   Rotate[Text["b Sin(\[Theta])", {-.3, 2}], 90 Degree]}, 
+ ImageSize -> 350,
+ Frame -> False,
+ FrameTicks -> None,
+ FrameLabel -> {"Cos(\[Theta]) is negative if \!\(\*FractionBox[\(\
+\[Pi]\), \(2\)]\) < \[Theta] < \[Pi]", None, None, None},
+ PlotRange -> {{-.5, 6}, {-.5, 4.5}}]
+</div> 
+
+
+<table style="width:80%">
+  <tr>
+    <td>
+
+<figure>
+<div><img src="figures/pythagor1.png" width="252" height="250"/></div>
+<figcaption>Cosine is positive: cos&theta; &gt; 0.</figcaption>
+</figure>
+
+</td>
+    <td>    
+&nbsp; &nbsp; &nbsp
+    </td>
+    <td>
+<figure>
+<div><img src="figures/pythagor2.png" width="252" height="250"/></div>
+<figcaption>Cosine is negative: cos&theta; &lt; 0.</figcaption>
+</figure>
+
+</td>
+</tr>
+</table>
+
+</div>
+
+
+The following command finds the length (number of components) of a vector: 
+
+<div class="box1"> 
+v = {3, 5}; <br />
+Length[v] </div>
+ <div class="box2"> Out[5]= 2 </div> 
+
+<p>
+The law of cosines implies a familiar fact about plane triangles: the length of one side is not greater than the sum of the lengths of the other two sides. 
+
+
+<div id="theorem3" class="theorem">
+<!-- DON'T paste before here! -->
+<span style="color:blue"><b>Theorem (Triangle inequality): </b></span> 
+Let &#119886;, <i>b</i>, and <i>c</i> be the lengths of the sides of a plane triangle. Then  
+
+<div class="math">
+\[ 
+c \le a+b . 
+\] </div>
+</div>
+
+<button type="button" class="btn btn-proof collapse_panel" data-toggle="collapse" data-target="#proof3">Proof of Triangle inequality:</button>
+   <div id="proof3" class="collapse proof">
+Let &theta; be the angle between the sides whose lengths are &#119886; and  <i>b</i>. Since &minus;cos&theta; &le; 1, the law of cosines theorem tells us that 
+
+<div class="math">
+\[ 
+c^2 = a^2 - 2ab\,\cos\theta + b^2 \le a^2 + 2ab\,\cos\theta + b^2 = (a+b)^2 . 
+\] </div> 
+
+Hence, <i>c</i> &le;  &#119886; + <i>b</i>. 
+</div> 
+
+Let us consider the triangle formed by vectors 
+
+<div class="math">
+\[ 
+{\bf a} = \begin{pmatrix} a_1 \\ a_2 \end{pmatrix} \qquad \mbox{and} \qquad {\bf b} = \begin{pmatrix} b_1 \\ b_2 \end{pmatrix} . 
+\] </div> 
+
+
+
+<table style="width:80%">
+  <tr>
+    <td>
+
+<figure>
+<div><img src="figures/tr1.png" width="252" height="250"/></div>
+<figcaption>Angle between vectors</figcaption>
+</figure>
+
+</td>
+    <td>    
+&nbsp; &nbsp; &nbsp
+    </td>
+    <td>
+<div class="box1">
+b3 = {.75, .75};
+a3 = {1.5, .25};
+c3 = {b3, a3};
+arc3 = {Green, 
+  Circle[{0, 0}, .25, {.25, VectorAngle[b3, {.5, 0}]}]}; Show[
+ Graphics[{arc3, Directive[Red, Thick], Arrow[{{0, 0}, b3}], 
+   Directive[Green, Thick], Arrow[{b3, a3}], Directive[Blue, Thick], 
+   Arrow[{{0, 0}, a3}]}, PlotRangePadding -> .5, Axes -> True], 
+ Epilog -> {Rotate[
+    Text["\[Theta] = " <> ToString[VectorAngle[a3, b3]/Degree] <> 
+      "\[Degree]", {.45, .17}], 15 Degree], 
+   Text["b = " <> ToString[b3], {.8, .8}], 
+   Text["a= " <> ToString[a3], {1.75, .25}], Text["c", {1.1, .6}]}]
+</div>
+
+</td>
+  </tr>
+</table> 
+<br>
+
+If we place <b>c</b> = <b>&#119886;</b> &minus; <b>b</b> beginning at <b>b</b>, it forms the third side of a triangle. Inspired by the Pythagorean theorem, we introduce the notation 
+
+<div class="math">
+\[ 
+\| {\bf a} \| = \sqrt{a_1^2 + a_2^2} 
+\] </div>
+
+to indicate the Euclidean length of the vector <b>&#119886;</b>. Then 
+
+<div class="math">
+\[ 
+\| {\bf c} \|^2 = \left( a_1 - b_1 \right)^2 + \left( a_2 - b_2 \right)^2 . 
+\] </div>
+
+The law of cosines tells us that 
+
+<div class="math">
+\[ 
+\| {\bf a} \|^2 + \| {\bf b} \|^2 - 2 \,\| {\bf a} \| \| {\bf b} \| \cos\theta = \| {\bf c} \|^2 . 
+\] </div>
+
+Thus, 
+
+<div class="math">
+\[ 
+a_1^2 + a_2^2 + b_1^2 + b_2^2 - 2 \,\| {\bf a} \| \| {\bf b} \| \cos\theta = \left( a_1 - b_1 \right)^2 + \left( a_2 - b_2 \right)^2 . 
+\] </div>
+
+Hence, 
+
+<div class="math">
+\[ 
+a_1^2 + a_2^2 + b_1^2 + b_2^2 - 2 \,\| {\bf a} \| \| {\bf b} \| \cos\theta = a_1^2 - 2a_1 b_1 + b_1^2 + a_2^2 - 2a_2 b_2 + b_2^2 ,
+\] </div>
+
+and therefore 
+
+<div class="math">
+\begin{equation} \label{EqDot.1}  
+a_1 b_1 + a_2 b_2 = \| {\bf a} \| \| {\bf b} \| \cos\theta . 
+\end{equation} </div> 
+
+<em>Mathematica</em> has a dedicated command to determine an angle between two vectors by specifying the reference: 
+
+<div class="box1">
+u = {2, 3}; v = {-3, 2}; <br />
+PlanarAngle[{u, {0, 0}, v}]
+</div>
+<div class="box2">
+\[Pi]/2
+</div>
+
+
+
+The left-hand side of Eq.\eqref{EqDot.1} is the <b>dot product</b> of vectors 
+<b>&#119886;</b> and <b>b</b> (written is rectangular coordinates) and is denoted by 
+
+<div class="math">
+\[ 
+{\bf a} \cdot {\bf b} = a_1 b_1 + a_2 b_2 = \| {\bf a} \| \| {\bf b} \| \cos\theta . 
+\] </div> 
+
+The Euclidean length (called norm) and the dot product are related by 
+
+<div class="math">
+\[ 
+\| {\bf a} \| = \left( {\bf a} \cdot {\bf a} \right)^{1/2} = \left( a_1^2 + a_2^2 \right)^{1/2} = \| {\bf a} \|_2 , 
+\] </div>
+
+where we choose a positive branch for the square root (analytic function). Usually, the  Euclidean norm is supplied with subscript "2" because there are known many other norms (that are discussed in the following <a href="norm.html">section</a>). 
+
+<div class="box1">
+TrueQ[Norm[a3] == Sqrt[a3.a3]]
+</div>
+<div class="box2">
+True
+</div>
+
+
+<p>
+The prime example of dot operation is work that is defined as the scalar product of force and
+displacement. The presence of cos(θ) ensures the requirement that the work
+done by a force perpendicular to the displacement is zero.
+</p>
+
+<!----
+You can compute this in Matlab as dot([1+i, 2-i], [3-2i, 1+i])
+---->
+
+
+<p>
+<button type="button" class="btn btn-info collapse_panel" data-toggle="collapse" data-target="#demo1">Example 1: 
+Sailing boat.</button>
+  <div id="demo1" class="collapse">
+<span class="style1">Example 1:</span> 
+ 
+Suppose that a boat is sailing at 7 knots, following a course of 015&#176; (that is, 15&deg; east of north), on a bay that has a 3-knot current setting in the direction 073&#176; (that is, 73&deg; east of north). 
+</p>
+
+<p>In navy, the expression <em>made good</em> is standard navigation terminology for the actual course and speed of a vessel over the bottom. The velocity vector <b>s</b> for the <a href="https://en.wikipedia.org/wiki/Ketch">ketch</a> and <b>c</b> for the current are shown in the figure, in which the vertical axis points due north. 
+
+
+<table style="width:80%">
+  <tr>
+    <td>
+
+<figure>
+<div><img src="figures/sail.png" width="252" height="250"/></div>
+<figcaption>Sailing vector</figcaption>
+</figure>
+
+</td>
+    <td>    
+&nbsp; &nbsp; &nbsp
+    </td>
+    <td>
+<div class="box1">
+x1 = Solve[Cos[20 Degree] == adj/2, adj][[1, 1, 2]] // N;
+y1 = Solve[x1^2 + y1^2 == 4, y1][[2, 1, 2]];
+c = {x1, y1}
+
+
+
+</div>
+
+</td>
+  </tr>
+</table> 
+<br>
+
+
+
+<div class="box1">
+
+</div>
+
+
+We find <b>s</b> and <b>c</b> by using <em>Mathematica</em>: 
+
+<div class="math">
+\[ 
+{\bf s} = \left[ 7\,\cos 75^{\circ} , 7\,\sin 75^{\circ} \right] = \left[ 1.81173 , 6.76148 \right] 
+\] </div> 
+
+<div class="box1">
+N[7*Cos[75 Degree]]
+</div>
+<div class="box2">
+1.81173
+</div>
+<div class="box1">
+N[7*Sin[75 Degree]]
+</div>
+<div class="box2">
+6.76148
+</div>
+
+
+and 
+
+<div class="math">
+\[ 
+{\bf c} = \left[ 3\,\cos 17^{\circ} , 3\,\sin 17^{\circ} \right] = \left[  2.86891 , 0.877115 \right] . 
+\] </div> 
+
+<div class="box1">
+N[3*Cos[17 Degree]]
+</div>
+<div class="box2">
+2.86891
+</div>
+<div class="box1">
+N[3*Sin[17 Degree]]
+</div>
+<div class="box2">
+0.877115
+</div>
+
+By adding <b>s</b> and <b>c</b>, we find the vector <b>v</b> = <b>s</b> + <b>c</b> representing the course and speed of the ketch over the bottom---that is, the course and speed made good. Hence, we have <b>v</b> = [4.68064 ,  6.76148]. Therefore, the speed of the boat is 
+
+<div class="math">
+\[ 
+\| {\bf v} \| \approx \sqrt{(4.68064)^2 + (6.76148)^2} \approx 8.2235 \mbox{ knots}. 
+\] </div> 
+
+The course made good is given by 
+
+<div class="math">
+\[ 
+90^{\circ} - \arctan \left( \frac{6.76148}{4.68064} \right) \approx 34.693^{\circ} . 
+\] </div>
+
+That is, the course is 034&deg;. 
+</div> 
+
+<p>
+<button type="button" class="btn btn-info collapse_panel" data-toggle="collapse" data-target="#demo2">Example 2: 
+Sailing boat with current </button>
+  <div id="demo2" class="collapse">
+<span class="style1">Example 2:</span> 
+Suppose that the captain of our boat realizes the importance of keeping track of the current. He wishes to sail in 6 hours to a harbor that bears 110&#176; and is 42 nautical miles away. That is, he wishes to make good the course 110&#176; and the speed 6 knots. He knows from a tide and current table that the current is setting due south at 3 knots. 
+</p>
+
+
+<table style="width:80%">
+  <tr>
+    <td>
+
+<figure>
+<div><img src="figures/sail2.png" width="252" height="250"/></div>
+<figcaption>The vector <b>s</b> = <b>v</b> &minus; <b>c</b> </figcaption>
+</figure>
+
+</td>
+    <td>    
+&nbsp; &nbsp; &nbsp
+    </td>
+    <td>
+<div class="box1">
+
+
+
+</div>
+
+</td>
+  </tr>
+</table> 
+<br>
+
+
+
+In vector diagram, we again represent the course and speed to be made good by a vector <b>v</b> and the velocity of the current by <b>c</b>. The correct course and speed to follow are represented by the vector <b>s</b>, which is obtained by computing 
+
+<div class="math">
+\begin{align*}
+{\bf s} &= {\bf v} - {\bf c}
+\\ 
+&= \left[ 6\,\cos 40^{\circ}, -6\,\sin 40^{\circ} \right] - \left[ 0 , -3 \right]
+\\ 
+&= \left[ 4.59627 , - 3.85673 \right] - \left[ 0 , -3 \right] = \left[  4.59627 , -0.85673 \right] .
+\end{align*} </div> 
+
+Thus, the captain should steer course 
+
+<div class="math">
+\[ 
+90^{\circ} - \arctan \left( -\frac{0.85673}{4.59627} \right) \approx 90^{\circ} + 10.5586 = 100..5586^{\circ} ,
+\] </div> 
+
+and should proceed at 
+
+<div class="math">
+\[ 
+\| {\bf s} \| \approx \sqrt{(0.85673)^2 + (4.59627)^2} \approx 4.67543 \mbox{ knots}. 
+\] </div> 
+
+</div>
+
+
+
+<p>&nbsp;</p>
+<div class="chapter">
+<p class="custom">Dot product in &Ropf;<sup>n</sup> and &Copf;<sup>n</sup> </p>
+    <hr color="#cccccc" noshade="noshade" size="1" width="100%" />
+</div>
+
+Motivated by two-dimensional case, we extend dot product to a  finite-dimensional vector space under arbitrary field. However, this operation between two vectors can be implemented only 
+when a basis is chosen for  the corresponding vector space, allowing one to  render coordinates . 
+
+
+<div class="definition"> 
+The <strong>dot product</strong> of two vectors of the same size 
+<span class="math">\( {\bf x} = \left[ x_1 , x_2 , \ldots , x_n \right] \) </span> and 
+<span class="math">\( {\bf y} = \left[ y_1 , y_2 , \ldots , y_n \right] \) </span> (independently whether they are columns or rows) is the scalar, 
+denoted either by <span class="math">\( {\bf x} \cdot {\bf y} : \) </span> 
+
+<div class="math">
+\begin{equation} \label{EqDot.2} 
+{\bf x} \cdot {\bf y} = x_1 y_1 + x_2 y_2 + \cdots + x_n y_n ,
+\end{equation} </div>
+when entries are real, or 
+
+<div class="math">
+\begin{equation} \label{EqDot.3} 
+{\bf x} \cdot {\bf y} = {\bf x}^{\ast} {\bf y} = \overline{x_1} y_1 + \overline{x_2} y_2 + \cdots + \overline{x_n} y_n ,
+\end{equation} </div>
+
+when entries are complex. Here <span class="math">\( (a + {\bf j}\,b )^{\ast} = \overline{a + {\bf j}\,b} = a - {\bf j}\,b \) </span> is the complex conjugate to &#119886; + <b>j</b><i>b</i> &isin; &Copf;. 
+</div> <br/>   
+
+
+Using definition of the dot product, we can verify its following properties. For <b>x</b>, <b>y</b>, <b>z</b> &isin; &Copf;<sup>n</sup> and <i>k</i> &isin; &Copf;, we have  
+
+<ol type="a">
+  <li>
+<b>x</b>&thinsp;&sdot;&thinsp;<b>x</b> = 0 if and only if <b>x</b> = <b>0</b>;
+</li>
+  <li>
+(<b>x</b> + <b>y</b>)&thinsp;&sdot;&thinsp;<b>z</b> = <b>x</b>&thinsp;&sdot;&thinsp;<b>z</b> + <b>y</b>&thinsp;&sdot;&thinsp;<b>z</b>;
+  <li>
+<b>x</b>&thinsp;&sdot;&thinsp;(<i>k</i><b>y</b>) = <i>k</i>(<b>x</b>&thinsp;&sdot;&thinsp;<b>y</b>); 
+</li>
+  <li>
+<span class="math">\( {\bf x} \cdot {\bf y} = \overline{{\bf y} \cdot {\bf x}} . \) </span> </li>
+</ol> 
+
+This list of properties suggests that the dot product it is a positive-definite <a href="https://en.wikipedia.org/wiki/Bilinear_map">bilinear mapping</a> 
+
+<div class="math">
+\[ 
+\mbox{dot product}\,:\, V^{\ast} \times V \mapsto \mathbb{F} \ \left( = \mathbb{R} \mbox{ or } \mathbb{C} \right) ,   
+\] </div>
+
+where <i>V</i>&#42; is the dual space. 
+However, in complex case, the first component does not enjoy multiplication by a complex scalar, but by its complex conjugate; this means that 
+
+<div class="math">
+\[ 
+\left( k\,{\bf x} \right) \cdot {\bf y} = \overline{k}\,{\bf x} \cdot {\bf y} . 
+\] </div>
+
+<b>Note:</b> Dot product for complex vector spaces can be defined as 
+
+<div class="math">
+\[ 
+{\bf x} \cdot {\bf y} = x_1 \overline{y_1} + x_2 \overline{y_2} + \cdots + x_n \overline{y_n} . 
+\] </div> 
+
+This definition is usually used in mathematics and we mark it as 
+<span style="background-color:tomato;">West Coast&nbsp;&nbsp;</span>. Our definition is mostly used in physics and engineering; correspondingly, we mark it as <span style="background-color:tomato;">East Coast</span>. Both definitions lead to the same conclusions and it does not matter which one is applied, but you have to be consistent. 
+</p>
+
+<button type="button" class="btn btn-info collapse_panel" data-toggle="collapse" data-target="#demo3">
+Example 3: Dot product of complex vectors </button>
+  <div id="demo3" class="collapse">
+<span style="color:#A52A2A"><b>Example 3: </b></span> 
+Let us calculate the dot prodict of the following two complex vectors: 
+
+<div class="math">
+\[ 
+{\bf x} \cdot {\bf y} , \qquad {\bf x} = \begin{bmatrix} 1 + {\bf j} \\ -2 + 3{\bf j} \\ 3 - {\bf j} \end{bmatrix} , \quad {\bf y} = \begin{bmatrix} 2 - {\bf j} \\ 4 + 2{\bf j} \\ 6 - 2{\bf j} \end{bmatrix} . 
+\] </div> 
+
+According to definition, we have 
+
+<div class="math">
+\[ 
+{\bf x} \cdot {\bf y} = \left( 1 - {\bf j} \right) \left( 2 - {\bf j} \right) +  \left( -2 - 3{\bf j} \right) \left( 4 + 2{\bf j} \right) +  \left( 3 + {\bf j} \right) \left( 6 - 2{\bf j} \right) .
+\] </div> 
+
+We ask <em>Mathematica</em> to do this arithmetic: 
+
+<div class="box1">
+(1 - I)*(2 - I) + (-2 - 3*I)*(4 + 2*I) + (3 + I)*(6 - 2*I)
+</div>
+<div class="box2">
+19 - 19 I
+</div>
+
+However, when we use a standard command, <em>Mathematica</em> provides 
+
+<div class="box1">
+Dot[{1 + I, -2 + 3*I, 3 - I}, {2 - I, 4 + 2*I, 6 - 2*I}]
+</div>
+<div class="box2">
+5 - 3 I
+</div>
+
+because it just multiplies the compoenents. So you need to enter complex conjugate entries into the first vector: 
+
+<div class="box1">
+Dot[{1 - I, -2 - 3*I, 3 + I}, {2 - I, 4 + 2*I, 6 - 2*I}]
+</div>
+<div class="box2">
+19 - 19 I
+</div>
+
+
+
+</div> 
+
+
+
+<p>
+A unit vector <strong>u</strong> is a vector whose length equals one: <span class="math">\( {\bf u} \cdot {\bf u} =1 . \) </span>  We say that two vectors 
+<strong>x</strong> and <strong>y</strong> are perpendicular if their dot product is zero. 
+</p>
+
+
+
+<div style="overflow:auto;">
+	<figure style="float:left; min-width:230px; text-align:center;">
+		<div><img src="../../image/gibbs.jpg" width="152" height="202"/></div>
+		<figcaption>Josiah Gibbs</figcaption>
+	</figure>
+
+
+The <a href="https://en.wikipedia.org/wiki/Dot_product">dot product</a> was first introduced by the American physicist and mathematician <a href="https://en.wikipedia.org/wiki/Josiah_Willard_Gibbs">Josiah Willard Gibbs</a> (1839--1903) in the 1880s. 
+</p>
+
+<p>
+With <a href="https://en.wikipedia.org/wiki/Norm_(mathematics)">Euclidean norm</a> &Vert;&middot;&Vert;<sub>2</sub>, the dot product formula  
+<div class="math">
+\[ 
+{\bf x} \cdot {\bf y} = \| {\bf x} \|_2 \, \| {\bf y} \|_2 \, \cos \theta ,  
+\tag{1}
+\] </div>
+defines &theta;, the angle between two vectors. This allows us to define the angle between two vectors: 
+
+
+
+</div>
+
+
+<div class="math">
+\begin{equation} \label{EqDot.4}
+\theta = \arccos \left( \frac{{\bf a} \cdot {\bf b}}{\| {\bf a} \| \cdot \| {\bf b} \| } \right) . 
+\end{equation} </div> 
+
+
+
+One can use the distributive property of the dot product to show that
+if (<i>a</i><sub>x</sub>, <i>a</i><sub>y</sub>, <i>a</i><sub>z</sub>) and (<i>b</i><sub>x</sub>, <i>b</i><sub>y</sub>, <i>b</i><sub>z</sub>) represent the components of <b>a</b> and <b>b</b> along the
+axes <i>x</i>, <i>y</i>, and <i>z</i>, then
+
+<div class="math">
+\[
+{\bf a} \cdot {\bf b} = a_x b_x + a_y b_y + a_z b_z . 
+\] </div> 
+
+From the definition of the dot product, we can draw an important conclusion. If we divide both sides of <b>a</b> · <b>b</b> = |<b>a</b>| |<b>b</b>| cos θ by |<b>a</b>|, we get
+
+<div class="math">
+\[
+\frac{{\bf a} \cdot {\bf b}}{|{\bf a}|} = |{\bf b}|\,\cos\theta \qquad \iff \qquad \left( \frac{{\bf a}}{|{\bf a}|} \right) \cdot {\bf b} = \hat{\bf e}_a \cdot {\bf b} = |{\bf b}|\,\cos\theta 
+\] </div>
+
+Noting that |<b>b</b>| cos θ is simply the projection of <b>b</b> along <b>a</b>, we conclude that in order to find the perpendicular projection of a vector <b>b</b> along another vector <b>a</b>, take dot product of <b>b</b> with <span class="math">\( \hat{\bf e}_a , \) </span> 
+ the unit vector along <b>a</b>.
+</p>
+
+
+
+<table style="width:80%">
+  <tr>
+    <td>
+
+<figure>
+<div><img src="figures/ortho1.png" width="252" height="250"/></div>
+<figcaption>The orthogonal projection</figcaption>
+</figure>
+
+</td>
+    <td>    
+&nbsp; &nbsp; &nbsp
+    </td>
+    <td>
+<div class="box1">
+b = {1, 1};
+l = {1, .25};
+p = a = Projection[b, l];
+x = b.a/Norm[a]^2 a;
+c = b - x;
+<br />
+arc1 = {Green, Circle[{0, 0}, .25, {.25, VectorAngle[b, {.5, 0}]}]};
+PlanarAngle[{0, 0} -> {b, p}]; Show[
+ Graphics[{Line[{{p[[1]] + .02, p[[2]] + .07}, {p[[1]] + .03, 
+      p[[2]] + .02}}], 
+   Line[{{p[[1]] - .01, p[[2]] + .07}, {p[[1]] + .02, p[[2]] + .08}}],
+    arc1, InfiniteLine[{0, 0}, l], Directive[Red, Thick], 
+   Arrow[{{0, 0}, b}], Directive[Green, Thick], Arrow[{{0, 0}, c}], 
+   Directive[Blue, Thick], Arrow[{{0, 0}, p}], Directive[Black], 
+   Directive[Black, Dotted], Line[{c, {1, 1}}], Line[{p, b}]}, 
+  PlotRangePadding -> .5, Axes -> True], 
+ GridLines -> {{Projection[b, l][[1]]}, {Projection[b, l][[2]]}}, 
+ Epilog -> {Rotate[
+    Text["\[Theta] = " <> ToString[VectorAngle[a, b]/Degree] <> 
+      "\[Degree]", {.43, .17}], 15 Degree], Text["b", {1.05, 1.05}], 
+   Text["a", {1.2, .25}], Text["c", {-.3, .6}]}]
+</div>
+
+</td>
+  </tr>
+</table> 
+<br>
+
+
+<button type="button" class="btn btn-info collapse_panel" data-toggle="collapse" data-target="#demo4">
+Example 4: Angle between two vectors </button>
+  <div id="demo4" class="collapse">
+<span style="color:#A52A2A"><b>Example 4: </b></span> 
+
+What is the angle between <b>i</b> and <b>i</b> + <b>j</b> + 2<b>k</b>?
+
+<div class="math">
+\begin{align*}
+\theta &= \arccos \left( \frac{{\bf i} \cdot ({\bf i} + {\bf j} + 2 {\bf k})}{\| {\bf i} \| \cdot \| {\bf i} + {\bf j} + 2 {\bf k} \| } \right) 
+\\ 
+&= \arccos \left( \frac{1}{\sqrt{6}} \right) \approx 1.15026. 
+\end{align*} </div> 
+
+We check with <em>Mathematica</em>:
+
+<div class="box1">
+VectorAngle[{1, 0, 0}, {1, 1, 2}]
+</div>
+<div class="box2">
+ArcCos[1/Sqrt[6]]
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+        
+<p>
+The <a href="https://en.wikipedia.org/wiki/Dot_product">dot product</a> of any two vectors of the same dimension can be done with the dot operation given as <strong>Dot</strong>[<em>vector 1</em>, <em>vector 2</em>] or with use of a period “. “ . </p>
+<div class="box1">
+{1,2,3}.{2,4,6} 
+</div>
+<div class="box2">
+28
+</div>
+<div class="box1">
+Dot[{1,2,3},{3,2,1} ]
+</div>
+<div class="box2">
+10
+</div>
+
+
+
+
+<center>
+<table width="807" border="1">
+  <tr>
+    <th width="186" scope="col">&nbsp;<img src="../../image/cauchy.jpg" width="152" height="202"/></th>
+    <th width="19" scope="col">&nbsp;</th>
+    <th width="281" scope="col">&nbsp;<img src="../../image/bunyakovsky.jpg" width="152" height="202"/></th>
+    <th width="24" scope="col">&nbsp;</th>
+    <th width="263" scope="col">&nbsp;<img src="../../image/Schwarz.jpg" width="152" height="202"/></th>
+  </tr>
+  <tr>
+    <td>&nbsp;Augustin-Louis Cauchy</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;Viktor Yakovlevich Bunyakovsky</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;Hermann Amandus Schwarz</td>
+  </tr>
+</table>
+</center>
+
+
+For any norm,  the <a href="https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality"><strong>Cauchy--Bunyakovsky--Schwarz</strong> (or simply CBS) <strong> inequality</strong></a> holds: 
+<div class="math">
+\[ 
+| {\bf x} \cdot {\bf y} | \le \| {\bf x} \| \, \| {\bf y} \| .  
+\] </div> 
+The inequality for sums was published by the French mathematician and physicist <a href="https://en.wikipedia.org/wiki/Augustin-Louis_Cauchy">Augustin-Louis Cauchy</a> (1789--1857) in 1821, while the corresponding 
+inequality for integrals was first proved by the Russian mathematician <a href="https://en.wikipedia.org/wiki/Viktor_Bunyakovsky">Viktor Yakovlevich Bunyakovsky</a> (1804--1889) in 1859. The modern proof 
+(which is actually a repetition of the Bunyakovsky's one) of the integral inequality was given by the German mathematician <a href="https://en.wikipedia.org/wiki/Hermann_Schwarz">Hermann Amandus Schwarz</a> (1843--1921) in 1888. 
+With Euclidean norm, we can define the dot product as 
+<div class="math">
+\[ 
+{\bf x} \cdot {\bf y} = \| {\bf x} \| \, \| {\bf y} \| \, \cos \theta ,  
+\] </div>
+where <span class="math">\( \theta \) </span> is the angle between two vectors. &#9632;
+
+
+
+
+
+
+
+
+
+
+
+<p>&nbsp;</p>
+
+<button type="button" class="btn btn-success collapse_panel" data-toggle="collapse" data-target="#subsection_exercise">Subsection: 
+Exercises</button>
+  <div id="subsection_exercise" class="collapse">
+
+ <ol type="1">
+  <li>
+What is the angle between the vectors <b>i</b> + <b>j</b> and <b>i</b> + 3<b>j</b>?
+</li>
+  <li>
+What is the area of the quadrilateral with vertices at (1, 1), (4, 2), (3, 7) and (2, 3)?
+</li>
+  <li>
+
+</li>
+  <li>
+
+</li>
+</ol> 
+</div>
+
+
+
+
+
+
+
+
+
+<button type="button" class="btn btn-info collapse_panel" data-toggle="collapse" data-target="#ref">References: </button>
+  <div id="ref" class="collapse">
+
+ <ol type="1">
+  <li>
+<a href="https://www.physicsclassroom.com/class/vectors/Lesson-1/Vector-Addition">Vector addition</a>
+</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol> 
+
+</div>
+
+<p>&nbsp;</p>
+</body>
+</html>
